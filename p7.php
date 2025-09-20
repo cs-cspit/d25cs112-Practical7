@@ -1,26 +1,22 @@
 <?php
 session_start();
 
-// Hardcoded users for demo
 $users = [
     "student1" => "password123",
     "student2" => "mypassword"
 ];
 
-// Logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    setcookie("username", "", time() - 3600); // Delete cookie
+    setcookie("username", "", time() - 3600);
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
 
-// Auto-login via cookie
 if (!isset($_SESSION['username']) && isset($_COOKIE['username'])) {
     $_SESSION['username'] = $_COOKIE['username'];
 }
 
-// Login form processing
 $error = "";
 if (isset($_POST['login'])) {
     $uname = $_POST['username'] ?? "";
@@ -31,7 +27,7 @@ if (isset($_POST['login'])) {
         $_SESSION['username'] = $uname;
 
         if ($remember) {
-            setcookie("username", $uname, time() + 86400 * 7); // 7 days
+            setcookie("username", $uname, time() + 86400 * 7);
         } else {
             setcookie("username", "", time() - 3600);
         }
